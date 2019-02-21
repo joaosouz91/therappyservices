@@ -8,6 +8,17 @@ exports.list_all_messages = function (req, res) {
         res.json(msg);
     });
 };
+
+/*exports.create_a_message = function (req, res) {
+    var new_msg = new Message(req.body);
+    new_msg.save(function (err, msg) {
+        if (err)
+            res.send(err);
+        res.json(msg);
+    });
+};*/
+
+//modified create_a_message
 exports.create_a_message = function (req, res) {
     var new_msg = new Message(req.body);
     new_msg.save(function (err, msg) {
@@ -16,6 +27,7 @@ exports.create_a_message = function (req, res) {
         res.json(msg);
     });
 };
+
 exports.read_a_message = function (req, res) {
     Message.findById(req.params.msgId, function (err, msg) {
         if (err)
