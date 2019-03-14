@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "@google/maps": "^0.5.5",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "express-load": "^1.1.16",

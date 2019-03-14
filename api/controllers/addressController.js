@@ -2,6 +2,10 @@
 
 var request = require('request');
 
+const googleMapsClient = require('@google/maps').createClient({
+    key : 'AIzaSyAFbHBKFi2jgpifwJcilAgDE99QBofYGGA'
+});
+
 exports.get_latitude_longitude = function (req, res) {
 
     var addressReq = req.body.address;
@@ -27,6 +31,21 @@ exports.get_latitude_longitude = function (req, res) {
 
 exports.get_top_fifty_nearly_address = function (req, res) {
 
+    googleMapsClient.distanceMatrix({   
+            origins : [{lat : '35.700316', lng : '51.338029'}],
+            destinations :  [
+                                {lat : '35.804953', lng : '51.434145'},
+                                {lat : '35.804953', lng : '51.434145'}
+                            ],
+            departure_time: 'now',
+            mode: 'walking'
+        }, function(err, result){
+            if(!err){
+                res.json(result.json);
+            }else{
+                res.error(err.message);
+            }
+        });
 
 };
 

@@ -15,9 +15,9 @@ module.exports = function (app) {
     
     // address Routes
     app.route('/address/latitudeLongitude')
-        .post(address.get_latitude_longitude);
+        .get(address.get_latitude_longitude);
     app.route('/address/topFiftyNearlyAddress')
-        .post(address.get_top_fifty_nearly_address);
+        .get(address.get_top_fifty_nearly_address);
     app.route('/address/completeAddress')
         .post(address.get_complete_address);
 };
