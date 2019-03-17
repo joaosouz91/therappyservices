@@ -14,7 +14,7 @@ mongoose.connection.on('connected', function () {
 });
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-var routes = require('./api/routes/msgRoutes');
+var routes = require('./api/routes/routes');
 routes(app);
 app.listen(port);
 console.log('Message RESTful API server started on: ' + port);

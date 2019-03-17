@@ -29,24 +29,42 @@ exports.get_latitude_longitude = function (req, res) {
     );
 };
 
-exports.get_top_fifty_nearly_address = function (req, res) {
+exports.get_distance = function (req, res) {
 
-    googleMapsClient.distanceMatrix({   
-            origins : [{lat : '35.700316', lng : '51.338029'}],
-            destinations :  [
-                                {lat : '35.804953', lng : '51.434145'},
-                                {lat : '35.804953', lng : '51.434145'}
-                            ],
+    //console.log(req.body.origin);
+
+    var origin = req.body.origin;
+    var destinations = req.body.destinations;
+    var mode = req.body.mode;
+
+    googleMapsClient.distanceMatrix({
+            origins : origin,
+            destinations : destinations,
             departure_time: 'now',
-            mode: 'walking'
+            mode: mode
         }, function(err, result){
             if(!err){
-                res.json(result.json);
+                /*
+                var jsonObj2 = {};
+                jsonObj2.teste = "c";
+                jsonObj2["teste"][0] = {"teste" : "teste"}; //nao permitido
+                console.log(jsonObj2);
+                */
+                var newJsonObj = {};
+                newJsonObj.origin = origin;
+                var distances = {};
+                for(var i = 0; i < result.json.rows[0].elements.length; i++){
+                    //Para que a linha 57 possa ser executada, necessario que "distance" ja esteja declardo como uma propriedade de "newJsonObject"
+                    //newJsonObj["distance"][i] = result.json.rows[0].elements[i].distance.value+"m"; 
+                    distances["destination_"+i] = result.json.rows[0].elements[i].distance.value+"m";            
+                }
+                newJsonObj["distances"] = distances;
+                console.log(newJsonObj);
+                res.json(newJsonObj);
             }else{
                 res.error(err.message);
             }
         });
-
 };
 
 exports.get_complete_address = function (req, res) {
@@ -68,7 +86,7 @@ exports.get_complete_address = function (req, res) {
             var parsedJSON = JSON.parse(response.body.replace(/\r?\n|\r/g, ''));
             var latlng = "" + parsedJSON.results[0].geometry.location.lat + "," + parsedJSON.results[0].geometry.location.lng;
 
-            //necessário fazer um 2o request passando latitude e longitude pois o response anterior não traz a rua
+            //necessário fazer um 2º request passando latitude e longitude pois o response anterior não traz a rua
             request({
                 headers: { 'Content-Type': 'application/json' },
                 uri: 'https://maps.googleapis.com/maps/api/geocode/json?&latlng='
